@@ -1,43 +1,114 @@
+# 🕹️ Distributed Game — Networked Multiplayer Game using C++ and Sockets
 
-# Implementacja gry sieciowej z przedmiotu przetwarzanie rozproszone
-
-### Wymagania:
-- Komputer z systemem Linux. (Testy przeprowadzane były na urządzeniu z systemem Arch linux)
-- **cmake** - do generowania plików budowy projektu
-- **ninja** - Build system (opcjonalne w przypadku manualne kompilacji)
-- **tmux** - Do wygodnego właczenia 3 instancji aplikacji w jednym oknie terminala
-- **g++**  - Lub inny kompilator wspierający c++23
+This project is a simple distributed multiplayer game developed as part of the **Distributed Computing** course. It demonstrates basic network communication and concurrency in C++ using TCP sockets. I also implemented a **really** basic IMGUI system. The code quality of some parts of this project is definitely something that could be worked on, but during the development there was a really busy semester at my university so I decided to finish all the features as quickly as possible while sacrificing maintainability and readability.
 
 
-### Uruchomienie za pomocą skryptu
+![Game](/imgs/gameplay.png)
 
-Aplikacja może zostać uruchomienia poprzez wykonanie poniższego polecenia, które samo skompiluje projekt oraz otworzy okna aplikacji.
+---
 
-Wewnątrz folderu pobranego z repozytoriumu uruchomić polecenia (skrypt ./run.sh musi posiadać uprawnienia do wykonywania):
-```
+## 📋 Requirements
+
+To build and run the project, the following tools are required:
+
+* **Linux system** (tested on Arch Linux)
+* **CMake** – for generating build files
+* **Ninja** – build system (optional if compiling manually)
+* **g++** – or any other compiler with **C++23 support**
+* **tmux** – for splitting one terminal into 3 windows (optional)
+
+---
+
+## 🚀 Quick Start (Using Script)
+
+The easiest way to build and run the game is by using the provided script. It will compile the project and launch the application instances.
+
+From the root of the cloned repository, run:
+
+```bash
 mkdir build && cd build && cmake .. -G Ninja && ln -sf ../assets ./assets && cd .. && ./run.sh
 ```
 
-### Kompilacja manualna
+Make sure `run.sh` has executable permissions and a build directory with build files was generated (by cmake):
 
-1. Klonowanie repozytorium
+```bash
+chmod +x run.sh
 ```
-git clone rozproszone-projekt && git checkout master && cd rozproszone-projekt
+
+This script opens `tmux` with 3 windows:
+
+* 1 for the server
+* 2 for clients
+
+---
+
+## 🛠️ Manual Build Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/oosiriiss/simple-online-game.git
+cd distributed-game
 ```
-2. Generowanie plików do kompilacji (cmake + ninja)
+
+### 2. Generate Build Files (Using CMake + Ninja)
+
+```bash
+mkdir build && ln -sf ../assets ./assets
+cd build
+cmake .. -G Ninja
 ```
-mkdir build && ln -sf ../assets ./assets && cd build && cmake .. -G Ninja 
-```
-3. Kompilacja
-```
+
+### 3. Compile the Project
+
+```bash
 ninja
 ```
-4. Po pomyślnej kompilacji w katalogu build powinny znajdować się 2 pliki wykonywalne **executable-debug** oraz **executable-release**.
 
-### Uruchomienie manualne
+After a successful build, the `build/` directory will contain:
 
-1. Po pomyślnej kompilacji należy upewnić się, że port **63921** nie jest zajęty przez inny proces (Aplikacja używa tego portu dla serwera). Port ten można zmienić w pliku **Application.cpp** w funkcji ```Application::run```, a następnie ponownie skompilować projekt.
-2. Uruchomić 3 instancje aplikacji za pomocą poniższych poleceń (pliki wykonywanlne to ./build/executable-debug oraz ./build/executable-release):
-    1. Okno serwerowe ```./build/executable-release server```
-    2. Okno Klienta 1 ```./build/executable-release```
-    3. Okno Klienta 2 ```./build/executable-release```
+* `executable-debug`
+* `executable-release`
+
+---
+
+## 🔹 Manual Launch Instructions
+
+### 1. Verify Port Availability
+
+Ensure that **port `63921`** is not in use. This port is used by the server.
+
+To change the port, edit the function `Application::run` in `Application.cpp`, then recompile the project.
+
+### 2. Run Application Instances
+
+You will need to run **3 instances** of the application:
+
+```bash
+# In Terminal Window 1 – Server
+./build/executable-release server
+
+# In Terminal Window 2 – Client 1
+./build/executable-release
+
+# In Terminal Window 3 – Client 2
+./build/executable-release
+```
+
+> You can also use `executable-debug` if you prefer the debug version.
+
+---
+
+## 📞 Networking Info
+
+* The game communicates over **TCP sockets**
+* Server listens on port **63921** by default
+* Clients connect to the server on startup
+
+---
+
+## 📚 License
+
+This project is for educational purposes as part of university coursework. You may do whatever you want as long as you comply with the license :)
+
+
